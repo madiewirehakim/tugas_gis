@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas-2 &copy; leaflet_GIS</title>
+    <link rel="stylesheet" type="text/css" href="leaflet/leaflet.css">
+    <script type="text/javascript" src="leaflet/leaflet.js"></script>
+
+</head>
+<body>
+    <div id="peta" style="width: 1000px; height: 750px;"></div>
+
+    <script src="assets/leaflet.ajax.min.js"></script>
+    <script src="assets/leaflet.ajax.js"></script>
+
+        <script>
+        var map = L.map('peta').setView([-8.8382917,116.2736429], 14);
+
+        var title = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,
+        attribution:'&copy; <a href="http:/www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+
+        var marker =L.marker([-8.8392593,116.2920082]).addTo(map)
+        .bindPopup('<b>Rumah saya</b><br />Rebuk ll, desa Rembitan').openPopup();
+        var popup=L.popup()
+        . setLatLng([-8.8383587,116.2866598])
+        .setContent('Sade Village')
+        .openOn(map);
+
+        function onMapClick(e){
+            popup
+            .setLatLng(e.latlng)
+            .setContent('you click the map at'+ e.latlng.toString())
+            .openOn(map);
+        }
+
+        var desa = {
+            "color": "#fa1616",
+            "weight": 5,
+            "opacity": 1
+        };
+        
+        var jalan = {
+            "color": "#000000",
+            "weight": 3,
+            "opacity": 2
+        };
+
+        function popUp(f,l){
+    var out = [];
+    if (f.properties){
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
+    }
+}
+        var jsonTest = new L.GeoJSON.AJAX(["GIS/Remitan.geojson"],{onEachFeature:popUp, style:desa}).addTo(map);
+        var jsonTest = new L.GeoJSON.AJAX(["GIS/telabah.geojson"],{onEachFeature:popUp,}).addTo(map);
+        var jsonTest = new L.GeoJSON.AJAX(["GIS/jalan.geojson"],{onEachFeature:popUp, style:jalan}).addTo(map);
+
+    </script>
+   
+</body>
+</html>
